@@ -1,4 +1,4 @@
-import nbformat as nbf
+﻿import nbformat as nbf
 
 nb = nbf.v4.new_notebook()
 
@@ -60,7 +60,7 @@ cells.append(nbf.v4.new_code_cell("""def clean_text_columns(dataframe):
     It helps make grouping and counting more consistent during exploratory analysis.
     \"\"\"
     cleaned = dataframe.copy()
-    text_columns = cleaned.select_dtypes(include="object").columns
+    text_columns = [column for column in cleaned.columns if pd.api.types.is_object_dtype(cleaned[column]) or pd.api.types.is_string_dtype(cleaned[column])]
 
     for column in text_columns:
         cleaned[column] = cleaned[column].astype("string").str.strip()
@@ -84,7 +84,7 @@ def convert_time_columns(dataframe):
     ]
 
     for column in time_columns:
-        cleaned[column] = pd.to_datetime(cleaned[column], errors="coerce")
+        cleaned[column] = pd.to_datetime(cleaned[column], format="mixed", errors="coerce")
 
     return cleaned"""))
 
@@ -214,3 +214,4 @@ with open("data_workflow.ipynb", "w", encoding="utf-8") as f:
     nbf.write(nb, f)
 
 print("Created data_workflow.ipynb")
+
