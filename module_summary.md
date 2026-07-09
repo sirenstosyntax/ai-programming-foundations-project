@@ -1,8 +1,8 @@
-\# AI Programming Foundations Project: Module Summary
+# AI Programming Foundations Project: Module Summary
 
 
 
-\## Overview
+## Overview
 
 
 
@@ -10,11 +10,11 @@ This project builds a reproducible data workflow using public Cincinnati Fire/EM
 
 
 
-\## Dataset Description
+## Dataset Description
 
 
 
-The dataset used in this project is `cincinnati\_fire\_incidents\_2025.csv`, a public Cincinnati Fire/EMS CAD incident dataset. The local file contains 97,881 rows and 17 columns. The fields include incident location information, incident creation time, dispatch time, arrival time, closure time, incident type, disposition, beat, neighborhood, and community council neighborhood.
+The dataset used in this project is `cincinnati_fire_incidents_2025.csv`, a public Cincinnati Fire/EMS CAD incident dataset. The local file contains 97,881 rows and 17 columns. The fields include incident location information, incident creation time, dispatch time, arrival time, closure time, incident type, disposition, beat, neighborhood, and community council neighborhood.
 
 
 
@@ -22,7 +22,7 @@ This dataset was selected because it is public, tabular, large enough for meanin
 
 
 
-\## Workflow Description
+## Workflow Description
 
 
 
@@ -30,7 +30,7 @@ The workflow begins by importing pandas, NumPy, and Matplotlib. The CSV file is 
 
 
 
-The first cleaning function, `clean\_text\_columns`, strips whitespace from text columns and standardizes blank text values as missing values. This supports cleaner grouping and counting during exploratory analysis. The second cleaning function, `convert\_time\_columns`, converts the incident time fields from text into datetime values. This step is important because the original CSV stores timestamp values as strings, which limits time-based analysis until conversion is complete.
+The first cleaning function, `clean_text_columns`, strips whitespace from text columns and standardizes blank text values as missing values. This supports cleaner grouping and counting during exploratory analysis. The second cleaning function, `convert_time_columns`, converts the incident time fields from text into datetime values. This step is important because the original CSV stores timestamp values as strings, which limits time-based analysis until conversion is complete.
 
 
 
@@ -38,23 +38,23 @@ After cleaning, the notebook creates three analysis features:
 
 
 
-1\. `incident\_hour`
+1\. `incident_hour`
 
-2\. `incident\_day\_name`
+2\. `incident_day_name`
 
-3\. `dispatch\_to\_arrival\_minutes`
-
-
-
-The `dispatch\_to\_arrival\_minutes` field is calculated from primary unit dispatch and arrival timestamps. This makes it possible to explore one simplified response-time interval, while still recognizing that this interval is not a complete measure of operational performance.
+3\. `dispatch_to_arrival_minutes`
 
 
 
-The notebook also includes an exploratory data analysis function, `summarize\_incident\_data`, which prints the dataset shape, top incident types, top dispositions, top neighborhoods, and summary statistics for dispatch-to-arrival time.
+The `dispatch_to_arrival_minutes` field is calculated from primary unit dispatch and arrival timestamps. This makes it possible to explore one simplified response-time interval, while still recognizing that this interval is not a complete measure of operational performance.
 
 
 
-\## Key Decisions and Assumptions
+The notebook also includes an exploratory data analysis function, `summarize_incident_data`, which prints the dataset shape, top incident types, top dispositions, top neighborhoods, and summary statistics for dispatch-to-arrival time.
+
+
+
+## Key Decisions and Assumptions
 
 
 
@@ -62,23 +62,23 @@ One key decision was to keep the original public CSV file in the repository beca
 
 
 
-The workflow uses `INCIDENT\_TYPE\_ID` as the main incident-type field because `INCIDENT\_TYPE\_DESC`, `CFD\_INCIDENT\_TYPE`, and `CFD\_INCIDENT\_TYPE\_GROUP` contain substantial missing values in this local file. The notebook therefore avoids over-relying on columns that are mostly empty. This is a practical data-quality decision rather than a claim that those fields are unimportant.
+The workflow uses `INCIDENT_TYPE_ID` as the main incident-type field because `INCIDENT_TYPE_DESC`, `CFD_INCIDENT_TYPE`, and `CFD_INCIDENT_TYPE_GROUP` contain substantial missing values in this local file. The notebook therefore avoids over-relying on columns that are mostly empty. This is a practical data-quality decision rather than a claim that those fields are unimportant.
 
 
 
-The response-time calculation assumes that `DISPATCH\_TIME\_PRIMARY\_UNIT` and `ARRIVAL\_TIME\_PRIMARY\_UNIT` represent comparable timestamps for the primary responding unit. Missing, invalid, negative, or extreme intervals are handled cautiously during visualization by filtering the histogram to values between 0 and 60 minutes.
+The response-time calculation assumes that `DISPATCH_TIME_PRIMARY_UNIT` and `ARRIVAL_TIME_PRIMARY_UNIT` represent comparable timestamps for the primary responding unit. Missing, invalid, negative, or extreme intervals are handled cautiously during visualization by filtering the histogram to values between 0 and 60 minutes.
 
 
 
-Reproducible workflow design is important because reviewers and future users need to rerun the analysis and understand each step. Danchev (2022) emphasizes reproducible data science practices using Python-based workflows, which supports this project’s use of a structured notebook, local data file, and requirements file. Wickham (2014) also supports the importance of organizing and cleaning tabular data so that it can be manipulated, visualized, and interpreted more reliably.
+Reproducible workflow design is important because reviewers and future users need to rerun the analysis and understand each step. Danchev (2022) emphasizes reproducible data science practices using Python-based workflows, which supports this project's use of a structured notebook, local data file, and requirements file. Wickham (2014) also supports the importance of organizing and cleaning tabular data so that it can be manipulated, visualized, and interpreted more reliably.
 
 
 
-\## Results and Interpretation
+## Results and Interpretation
 
 
 
-The dataset contains 97,881 incident records and 17 columns. Initial inspection showed that most core fields were populated, including location, agency, creation time, event number, and coordinates. Some fields had notable missing values. For example, `INCIDENT\_TYPE\_DESC`, `CFD\_INCIDENT\_TYPE`, and `CFD\_INCIDENT\_TYPE\_GROUP` were missing in most records. This guided the decision to use `INCIDENT\_TYPE\_ID` for incident-category exploration.
+The dataset contains 97,881 incident records and 17 columns. Initial inspection showed that most core fields were populated, including location, agency, creation time, event number, and coordinates. Some fields had notable missing values. For example, `INCIDENT_TYPE_DESC`, `CFD_INCIDENT_TYPE`, and `CFD_INCIDENT_TYPE_GROUP` were missing in most records. This guided the decision to use `INCIDENT_TYPE_ID` for incident-category exploration.
 
 
 
@@ -98,7 +98,7 @@ Figure 1 shows the top 10 incident type IDs. This chart makes the most common ca
 
 
 
-\## Responsible Practice
+## Responsible Practice
 
 
 
@@ -114,7 +114,7 @@ A major data-quality limitation is missingness. Several descriptive incident-typ
 
 
 
-\## Reproducibility
+## Reproducibility
 
 
 
@@ -126,7 +126,7 @@ The notebook was executed successfully using Jupyter through Python. The execute
 
 
 
-\## Sources and Citations
+## Sources and Citations
 
 
 
@@ -138,7 +138,8 @@ Danchev, V. (2022). Reproducible data science with Python: An open learning reso
 
 
 
-Wickham, H. (2014). Tidy data. \*Journal of Statistical Software, 59\*(10), 1–23. https://doi.org/10.18637/jss.v059.i10
+Wickham, H. (2014). Tidy data. \*Journal of Statistical Software, 59\*(10), 1-23. https://doi.org/10.18637/jss.v059.i10
+
 
 
 
