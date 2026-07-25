@@ -18,7 +18,7 @@ This project builds a reproducible data workflow using public Cincinnati Fire/EM
 
 
 
-The dataset used in this project is cincinnati_fire_incidents_2025.csv, a public Cincinnati Fire/EMS CAD incident dataset (City of Cincinnati, n.d.). The local file contains 97,881 rows and 17 columns. The fields include incident location information, incident creation time, dispatch time, arrival time, closure time, incident type, disposition, beat, neighborhood, and community council neighborhood.
+The dataset used in this project is cincinnati\_fire\_incidents\_2025.csv, a public Cincinnati Fire/EMS CAD incident dataset (City of Cincinnati, n.d.). The local file contains 97,881 rows and 17 columns. The fields include incident location information, incident creation time, dispatch time, arrival time, closure time, incident type, disposition, beat, neighborhood, and community council neighborhood.
 
 
 
@@ -34,7 +34,7 @@ The workflow begins by importing pandas, NumPy, and Matplotlib. The CSV file is 
 
 
 
-The first cleaning function, clean_text_columns, strips whitespace from text columns and standardizes blank text values as missing values. This supports cleaner grouping and counting during exploratory analysis. The second cleaning function, convert_time_columns, converts the incident time fields from text into datetime values. This step is important because the original CSV stores timestamp values as strings, which limits time-based analysis until conversion is complete.
+The first cleaning function, clean\_text\_columns, strips whitespace from text columns and standardizes blank text values as missing values. This supports cleaner grouping and counting during exploratory analysis. The second cleaning function, convert\_time\_columns, converts the incident time fields from text into datetime values. This step is important because the original CSV stores timestamp values as strings, which limits time-based analysis until conversion is complete.
 
 
 
@@ -42,19 +42,17 @@ After cleaning, the notebook creates three analysis features:
 
 
 
-1. incident_hour
-
-2. incident_day_name
-
-3. dispatch_to_arrival_minutes
+1. incident\_hour
+2. incident\_day\_name
+3. dispatch\_to\_arrival\_minutes
 
 
 
-The dispatch_to_arrival_minutes field is calculated from primary unit dispatch and arrival timestamps. This makes it possible to explore one simplified response-time interval, while still recognizing that this interval is not a complete measure of operational performance.
+The dispatch\_to\_arrival\_minutes field is calculated from primary unit dispatch and arrival timestamps. This makes it possible to explore one simplified response-time interval, while still recognizing that this interval is not a complete measure of operational performance.
 
 
 
-The notebook also includes an exploratory data analysis function, summarize_incident_data, which prints the dataset shape, top incident types, top dispositions, top neighborhoods, and summary statistics for dispatch-to-arrival time.
+The notebook also includes an exploratory data analysis function, summarize\_incident\_data, which prints the dataset shape, top incident types, top dispositions, top neighborhoods, and summary statistics for dispatch-to-arrival time.
 
 
 
@@ -66,11 +64,11 @@ One key decision was to keep the original public CSV file in the repository beca
 
 
 
-The workflow uses INCIDENT_TYPE_ID as the main incident-type field because INCIDENT_TYPE_DESC, CFD_INCIDENT_TYPE, and CFD_INCIDENT_TYPE_GROUP contain substantial missing values in this local file. The notebook therefore avoids over-relying on columns that are mostly empty. This is a practical data-quality decision rather than a claim that those fields are unimportant.
+The workflow uses INCIDENT\_TYPE\_ID as the main incident-type field because INCIDENT\_TYPE\_DESC, CFD\_INCIDENT\_TYPE, and CFD\_INCIDENT\_TYPE\_GROUP contain substantial missing values in this local file. The notebook therefore avoids over-relying on columns that are mostly empty. This is a practical data-quality decision rather than a claim that those fields are unimportant.
 
 
 
-The response-time calculation assumes that DISPATCH_TIME_PRIMARY_UNIT and ARRIVAL_TIME_PRIMARY_UNIT represent comparable timestamps for the primary responding unit. Missing, invalid, negative, or extreme intervals are handled cautiously during visualization by filtering the histogram to values between 0 and 60 minutes.
+The response-time calculation assumes that DISPATCH\_TIME\_PRIMARY\_UNIT and ARRIVAL\_TIME\_PRIMARY\_UNIT represent comparable timestamps for the primary responding unit. Missing, invalid, negative, or extreme intervals are handled cautiously during visualization by filtering the histogram to values between 0 and 60 minutes.
 
 
 
@@ -78,27 +76,67 @@ Reproducible workflow design is important because reviewers and future users nee
 
 
 
-## Results and Interpretation
+\## Results and Interpretation
 
 
 
-The dataset contains 97,881 incident records and 17 columns. Initial inspection showed that most core fields were populated, including location, agency, creation time, event number, and coordinates. Some fields had notable missing values. For example, INCIDENT_TYPE_DESC, CFD_INCIDENT_TYPE, and CFD_INCIDENT_TYPE_GROUP were missing in most records. This guided the decision to use INCIDENT_TYPE_ID for incident-category exploration.
+The dataset contains 97,881 incident records and 17 columns. Initial inspection showed that most core fields were populated, including location, agency, creation time, event number, and coordinates. Several descriptive fields had substantial missingness. In particular, `INCIDENT\_TYPE\_DESC`, `CFD\_INCIDENT\_TYPE`, and `CFD\_INCIDENT\_TYPE\_GROUP` were missing in most records. This supported the decision to use the more complete `INCIDENT\_TYPE\_ID` field for incident-category exploration.
 
 
 
-The top incident type IDs included EMS-related and fire-alarm-related categories. The most common incident type ID was EMS, followed by =FALARM, PERDWN - 32D1 UNKNOWN, ACCI - (C) =, and =INFOF. This suggests that the dataset includes a mix of EMS, fire alarm, accident, information, and other response categories.
+The most common incident type IDs included EMS, fire-alarm, person-down, accident, and informational categories. Common dispositions included transport, investigation, cancellation, patient refusal, transfer, and release outcomes. Neighborhood counts were highest in Westwood, Downtown, Avondale, East Price Hill, West Price Hill, Over-the-Rhine, West End, Walnut Hills, CUF, and College Hill.
 
 
 
-The top dispositions included transport, investigation, cancellation, refusal, transfer, and release outcomes. The most common disposition was TRL: TRANSPORT - LIGHTS/SIREN. Other common dispositions included IN: INVESTIGATION, CNOS: CANCELLED - ON SCENE/GOA, PRF: PATIENT REFUSED EVAL/CARE, and PTX: PATIENT TX - TRANSFER EMS.
+\### Figure 1: Top Incident Type IDs
 
 
 
-Neighborhood counts showed that incident volume was not evenly distributed across the city. The highest-count neighborhoods included Westwood, Downtown, Avondale, East Price Hill, West Price Hill, Over-the-Rhine, West End, Walnut Hills, CUF, and College Hill. These results show how neighborhood grouping can support later geographic or community-level analysis, while still requiring caution because incident counts alone do not account for population, call density, staffing, hazards, or reporting practices.
+Figure 1 shows that EMS was the largest individual incident category, with 4,792 records, followed by `=FALARM` with 4,278 records. The remaining leading categories included `PERDWN - 32D1 UNKNOWN`, `ACCI - (C) =`, and `=INFOF`. The figure therefore demonstrates that the dataset contains a varied mixture of EMS, fire-alarm, person-down, accident, informational, and other calls rather than one overwhelmingly dominant category.
 
 
 
-Figure 1 shows the top 10 incident type IDs. This chart makes the most common call categories easier to compare than a raw frequency table. Figure 2 shows incident counts by hour of day, which supports basic time-pattern exploration. Figure 3 shows the distribution of dispatch-to-arrival times after filtering to values between 0 and 60 minutes. The filtering decision makes the visualization easier to interpret by reducing the influence of extreme or invalid values.
+This finding supports the use of incident-type grouping for descriptive analysis, but it should be interpreted cautiously. `INCIDENT\_TYPE\_ID` contains operational coding labels rather than fully standardized plain-language categories. In addition, the more descriptive incident-type fields were largely missing, limiting the amount of detail available for validating or consolidating the codes.
+
+
+
+\### Figure 2: Incident Counts by Hour of Day
+
+
+
+Figure 2 shows that incident demand was not distributed evenly throughout the day. Counts were lower during the overnight and early-morning hours, increased during the daytime, and were highest during the afternoon and evening. This reveals a clear time-of-day pattern in the recorded incidents.
+
+
+
+The pattern may be useful for identifying periods of higher recorded activity, but it does not establish why call volume changes by hour or show whether staffing was sufficient. Population activity, commuting, business hours, weather, incident severity, reporting behavior, and other factors could contribute to the observed distribution. The chart is therefore an exploratory description of call timing rather than an operational staffing recommendation.
+
+
+
+\### Figure 3: Dispatch-to-Arrival Time Distribution
+
+
+
+Figure 3 shows that dispatch-to-arrival times were concentrated in the low single digits, with a median of approximately 4.4 minutes. Most observations were grouped toward the lower end of the displayed range, while fewer incidents had substantially longer intervals. This right-skewed pattern means the median is more representative of a typical observation than the mean alone because longer-duration records can pull the mean upward.
+
+
+
+The histogram was limited to intervals between 0 and 60 minutes to make the main distribution readable and reduce the visual influence of negative, invalid, or extreme values. This filtering improves interpretation of the chart but does not prove that every excluded record was erroneous. Some extreme intervals may reflect unusual incidents, staging, documentation practices, delayed timestamp entry, or other operational circumstances requiring further investigation.
+
+
+
+\### Overall Interpretation
+
+
+
+Together, the three figures show that the dataset contains varied incident categories, a recognizable time-of-day pattern, and a right-skewed dispatch-to-arrival distribution centered in the low single digits. They demonstrate how cleaned tabular data and derived time features can produce meaningful exploratory findings.
+
+
+
+Neighborhood totals also show that recorded incident volume was not evenly distributed across Cincinnati. However, raw counts do not account for population, daytime population, geography, call density, hazards, resource placement, or reporting practices. Population-adjusted rates and additional contextual data would be required before making fair comparisons among neighborhoods.
+
+
+
+These findings describe only the records in this dataset. They should not be interpreted as causal conclusions, personnel evaluations, performance standards, or recommendations for operational resource allocation.
 
 
 
@@ -143,7 +181,4 @@ Danchev, V. (2022). Reproducible data science with Python: An open learning reso
 
 
 Wickham, H. (2014). Tidy data. Journal of Statistical Software, 59(10), 1-23. https://doi.org/10.18637/jss.v059.i10
-
-
-
 
